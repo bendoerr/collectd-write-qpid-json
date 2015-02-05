@@ -75,6 +75,7 @@ SOFTWARE.
 [cd3]: https://collectd.org/wiki/index.php/Plugin:AMQP
 [cd1]: https://collectd.org/ "The system statistics collection daemon"
 [cd2]: https://collectd.org/wiki/index.php/JSON "Collectd JSON format"
+[cd4]: https://collectd.org/documentation/manpages/types.db.5.shtml
 [qpid1]: https://qpid.apache.org/ "Messaging built on AMQP"
 [qpid2]: https://qpid.apache.org/ "http://qpid.apache.org/components/messaging-api/index.html"
 [rmq1]: https://github.com/alanxz/rmq1 "RabbitMQ C Client"
