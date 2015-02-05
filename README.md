@@ -46,6 +46,15 @@ User     | "guest"      |
 Password | "guest"      | 
 Exchange | "amq.fanout" | AMQP address to send messages to.
 
+## Should I use this?
+
+I don't know if you should use it? I'm using it. I'll be responsive
+if you have questions, fixes, bugs, if that helps. If you have any of
+those you can interact with me via Github or shoot me an email
+(craftsman@bendoerr.me).
+
+<!-- TODO add details about why I wrote this, -->
+
 ## License
 ```
 The MIT License (MIT)
