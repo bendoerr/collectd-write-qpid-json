@@ -1,6 +1,6 @@
 # collectd-write-qpid-json
 
-A simple [Collectd][collectd-home] python plugin for writing metric's to an
+A simple [Collectd][collectd-home] python plugin for writing metrics to an
 [AMQP 1.0][amqp-home] compliant broker in the Collectd [JSON
 format][collectd-json] using Apache Qpid's Messaging Api [python
 bindings][qpid-messaging].
