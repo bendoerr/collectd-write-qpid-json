@@ -54,7 +54,7 @@ types = {}
 #
 # QPid Connection
 #
-# connection = None
+connection = None
 
 
 ################################################################################
@@ -83,19 +83,52 @@ def handle_init():
         '%s: Initialized and registered write handler.' % plugin_name)
 
 
+def handle_shutdown():
+    if connection != None and connection.opened():
+        try:
+            connection.close()
+            collectd.info("%s: Closed connection to endpoint." % plugin_name)
+        except MessagingError,m:
+            collectd.info("%s: Couldn't close connection." % plugin_name)
+
+    if connection != None:
+        connection = None
+
+
 def handle_write(vl):
-    connection = Connection("%s/%s@%s:%s" % (
-        config['User'], config['Password'], config['Host'], config['Port']))
+    global connection
+    if connection == None:
+        connection = Connection("%s/%s@%s:%s" % (
+            config['User'], config['Password'], config['Host'], config['Port']))
 
     try:
-        connection.open()
+        if not connection.opened():
+            # Open the connection if needed.
+            connection.open()
+            collectd.info("%s: Opened connection to endpoint." % plugin_name)
+
+        # Open a session
         session = connection.session()
         sender = session.sender(config['Exchange'])
+
+        # Send the message
         sender.send(Message(write_common.value_to_json(vl, types)))
+
+        # Close the session
+        session.close()
+
+    except ConnectionError,m:
+        collectd.error("%s: Failed to connect - %s" % (plugin_name, m))
+        connection = None
+
     except MessagingError,m:
-        collectd.error(m)
-    finally:
-        connection.close()
+        collectd.error("%s: Failed to send AMQP message - %s" % (plugin_name, m))
+        handle_shutdown()
+
+    except Error,m:
+        collectd.error("%s: Unknown Error - %s" % (plugin_name, m))
+        handle_shutdown()
+
 
 
 ################################################################################
@@ -171,5 +204,5 @@ collectd.register_init(handle_init)
 
 # collectd.register_write(handle_write) # Registered as part of handle_init
 
-
+collectd.register_shutdown(handle_shutdown)
 
